@@ -3,15 +3,17 @@ import HomePage from './pages/HomePage';
 import QuestionPage from './pages/QuestionPage';
 import ResultPage from './pages/ResultPage';
 import Dashboard from './pages/Dashboard';
+import SingleUserDetails from './pages/SingleUserDetails';
 
 function AppLayout() {
   const location = useLocation();
-  const isDashboard = location.pathname === '/dashboard';
+  const isDashboard = location.pathname.split('/')[1] === 'dashboard';
 
   if (isDashboard) {
     return (
       <Routes>
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard/user-details/:user_id' element={<SingleUserDetails/>}/>
       </Routes>
     );
   }

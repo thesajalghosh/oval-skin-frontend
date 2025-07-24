@@ -147,7 +147,8 @@ const ALL_QUESTION_LIST = [
       { key: 3, option: "30–39", icon: "", skin_type: [{ HAZE: 1 }, { BLOOM: 0.5 }] },
       { key: 4, option: "40–49", icon: "", skin_type: [{ DUSK: 1 }, { CALM: 0.5 }] },
       { key: 5, option: "50–59", icon: "", skin_type: [{ CALM: 1 }, { DUSK: 0.5 }] },
-      { key: 6, option: "60+", icon: "", skin_type: [{ BLOOM: 1 }, { CALM: 0.5 }] }
+      { key: 6, option: "60+", icon: "", skin_type: [{ BLOOM: 1 }, { CALM: 0.5 }] },
+      { key: 5, option: "Skip", icon: "", skin_type: [] }
     ]
   },
   {
@@ -155,7 +156,9 @@ const ALL_QUESTION_LIST = [
     question: "What is your sex assigned at birth? (optional)",
     options: [
       { key: 1, option: "Female", icon: "", skin_type: [{ CALM: 0.5 }, { BLOOM: 0.5 }] },
-      { key: 2, option: "Male", icon: "", skin_type: [{ FORGE: 0.5 }, { GLOW: 0.5 }] }
+      { key: 2, option: "Male", icon: "", skin_type: [{ FORGE: 0.5 }, { GLOW: 0.5 }] },
+      { key: 5, option: "Skip", icon: "", skin_type: [] }
+
     ]
   },
   {
@@ -165,7 +168,8 @@ const ALL_QUESTION_LIST = [
       { key: 1, option: "East/Southeast Asian", icon: "", skin_type: [{ BLOOM: 0.5 }, { HAZE: 0.5 }] },
       { key: 2, option: "South Asian / Latino / MENA", icon: "", skin_type: [{ HAZE: 0.5 }, { FORGE: 0.5 }] },
       { key: 3, option: "Black / African descent", icon: "", skin_type: [{ GLOW: 0.5 }, { MUSE: 0.5 }] },
-      { key: 4, option: "White / mixed / other", icon: "", skin_type: [{ CALM: 0.5 }, { DUSK: 0.5 }] }
+      { key: 4, option: "White / mixed / other", icon: "", skin_type: [{ CALM: 0.5 }, { DUSK: 0.5 }] },
+      { key: 5, option: "Skip", icon: "", skin_type: [] }
     ]
   }
 ];

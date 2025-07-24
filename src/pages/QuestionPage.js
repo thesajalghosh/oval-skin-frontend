@@ -11,7 +11,6 @@ const QuestionPage = () => {
   const { user_id } = useParams()
   const [loading, setLoading] = useState(false)
   const startTimeRef = useRef(Date.now())
-  const [unique, setQuestionSubmitData] = useState([])
 
 
 
@@ -30,10 +29,10 @@ function toRawAnswerFormatFromObject(cleanedAnswers, totalCount = null) {
   return result;
 }
 
-  const handleAnswerSubmit = async (totalTimeInMinutes) => {
+  const handleAnswerSubmit = async (temp_answer , totalTimeInMinutes) => {
     setLoading(true)
     const payload = {
-      "answers": toRawAnswerFormatFromObject(answers),
+      "answers": toRawAnswerFormatFromObject(temp_answer),
       "is_quiz_completed": true,
       "avg_total_time_per_completion": Number(totalTimeInMinutes),
       "avg_time_per_qst": Number((totalTimeInMinutes / ALL_QUESTION_LIST.length).toFixed(2)),
@@ -57,14 +56,16 @@ function toRawAnswerFormatFromObject(cleanedAnswers, totalCount = null) {
 
   const handleOptionSelect = (optionText) => {
     const { key, option, skin_type } = optionText
-    setAnswers({ ...answers, [step]: { key, option, skin_type } });
+    // console.log("option", option)
+    const temp_answer = { ...answers, [step]: "Skip"===option ? {} : { key, option, skin_type } }
+    setAnswers(temp_answer);
     setTimeout(() => {
       if (step < ALL_QUESTION_LIST.length - 1) {
         setStep(step + 1);
       } else {
         const endTime = Date.now();
         const totalTimeInMinutes = ((endTime - startTimeRef.current) / 1000 / 60).toFixed(2);
-        handleAnswerSubmit(totalTimeInMinutes)
+        handleAnswerSubmit(temp_answer , totalTimeInMinutes)
        
       }
     }, 300); // Delay for smooth UX
