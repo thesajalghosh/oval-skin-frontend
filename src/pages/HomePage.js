@@ -26,7 +26,7 @@ const HomePage = () => {
     }
 
     useEffect(() => {
-        axios.get('http://ip-api.com/json')
+        axios.get('https://ipinfo.io/json')
             .then((res) => {
                 setIpData(res.data);
             })
@@ -35,16 +35,17 @@ const HomePage = () => {
             });
     }, []);
 
+    console.log("ipData", ipData)
     const handleStartTest = async () => {
         setButtonLoading(true)
         const browser_data = detect();
         const payload = {
             unique_id: generateUniqueUserId(),
             country: ipData?.country,
-            countryCode: ipData?.countryCode,
-            ip_address: ipData?.query,
-            region: ipData?.regionName,
-            zip: ipData?.zip,
+            countryCode: ipData?.country,
+            ip_address: ipData?.ip,
+            region: ipData?.region,
+            zip: ipData?.postal,
             timezone: ipData?.timezone,
             city: ipData?.city,
             browser: browser_data?.name,
