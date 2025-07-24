@@ -1,48 +1,83 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaArrowUp, FaCheckCircle, FaExclamation, FaRegStickyNote, FaSearch, FaThermometerHalf, FaTimesCircle } from 'react-icons/fa';
 import { IoMdShare } from "react-icons/io";
-import TopImage from "../images/top.png";
-import OneBelowImage from "../images/below.png";
-import twoBelowImage from "../images/below2.png"
+import Product from "../images/result_group.png"
+import Ellipse from  "../images/ellipse.png"
+import { ALL_RESULT_LIST } from '../Constant.Others';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const ResultPage = () => {
+  const [finalResult, setFinalResult] = useState({})
+  const [loading, setLoading] = useState(true)
+  const { user_id } = useParams()
 
-  const dos = [
-    "Lightweight hydration that won’t clog",
-    "Barrier-repairing (use ceramides & panthenol)",
-    "Gentle sebum-balancing (use niacinamide)"
-  ];
-
-  const donts = [
-    "Over-cleansing or stripping the skin",
-    "High-percentage acids or physical scrubs",
-    "Layering too many actives at once"
-  ];
-  const tips = [
-    {
-      icon: "💧",
-      title: "Use a mist throughout the day",
-      description: "This way it can keep skin hydrated without layering too many products."
-    },
-    {
-      icon: "📅",
-      title: "Only double cleanse on certain days",
-      description:
-        "Double cleanse only when wearing makeup or sunscreen, not twice daily, to avoid stripping your barrier."
+// ...existing code...
+const getResultDetails = async () => {
+  setLoading(true);
+  const start = Date.now();
+  try {
+    const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/oval_skin/${user_id}`);
+    // setFinalResult(data); // Uncomment and use if you want to update finalResult with API data
+    console.log("ALL_RESULT_LIST?.[data?.skin_type]", ALL_RESULT_LIST?.[data?.data?.result_type], data?.data?.result_type)
+    setFinalResult(ALL_RESULT_LIST?.[data?.data?.result_type])
+    console.log(data)
+  } catch (error) {
+    console.log(error);
+  } finally {
+    const elapsed = Date.now() - start;
+    const minLoading = 12000; // 15 seconds in ms
+    const remaining = minLoading - elapsed;
+    if (remaining > 0) {
+      setTimeout(() => setLoading(false), remaining);
+    } else {
+      setLoading(false);
     }
-  ];
+  }
+}
+// ...existing code...
+
+  useEffect(()=>{
+   getResultDetails()
+
+  },[])
+
+  console.log("finalResult", finalResult)
+
   return (
-    <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-roboto'>
+    <>
+    {loading && (
+    <div className="h-screen flex flex-col justify-center items-center bg-[#FCFBF8] text-center">
+      {/* Dots */}
+      <div className="flex gap-3 mb-6">
+        <span className="dot dot1"></span>
+        <span className="dot dot2"></span>
+        <span className="dot dot3"></span>
+      </div>
+
+      {/* Text */}
+      <h2 className="font-semibold text-[1.5rem] text-[#262522] mb-1 mx-[40px]">
+        Analyzing your skin persona…
+      </h2>
+      <p className="text-sm text-[#262522] opacity-80">
+        Your Oval Type is almost ready
+      </p>
+    </div>
+    )}
+
+    
+  {!loading &&  <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-roboto'>
       <div className='flex justify-between mt-[30px] item-center'>
         <div className='w-[90%] text-center text-[25px]'>Your oval type is</div>
         <IoMdShare size={25} className='mt-2' />
       </div>
-      <h2 className='text-center text-[1.5rem] font-bold'>DUSK</h2>
-      <p className='text-center'>The moddy minimalist</p>
+      <h2 className='text-center text-[1.5rem] font-bold'>{finalResult?.skin_type}</h2>
+      <p className='text-center'>{finalResult?.type_subline}</p>
 
-      <div className='flex item-center justify-center'>
+      <div className='flex item-center justify-center relative mt-[10px]'>
 
-        <div className="w-[157.01px] h-[209.54px] bg-[#F7F1E8] opacity-100 rounded-full rotate-[-45deg]"></div>
+        <img src={Ellipse} alt='ellipse' className=''/>
+        <img src={finalResult?.image} alt='image_result' className='absolute top-0 left-[30%]'/>
       </div>
       {/* about section */}
       <div className="border border-2 rounded-xl p-4 text-left border-black mt-6">
@@ -51,7 +86,7 @@ const ResultPage = () => {
           <p className="font-semibold text-gray-800">About your oval type</p>
         </div>
         <p className="text-sm text-gray-600">
-          With dry, small-pored skin and a high tendency for irritation, Dusk types walk a fine line. Your skin barrier is easily overwhelmed — reacting to weather changes, product overload, or even stress. Redness, flaking, or stinging may come and go unpredictably. But once supported with the right routine, your skin softens into a beautifully calm, even-toned state.
+       {finalResult?.about}
         </p>
       </div>
       {/* skin overview */}
@@ -66,8 +101,7 @@ const ResultPage = () => {
           <div className="flex justify-between">
             <span>Sebum production:</span>
             <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm">
-              <FaArrowUp className="text-gray-600" />
-              High
+             {finalResult?.skin_overview?.sebum_production}
             </span>
           </div>
 
@@ -75,8 +109,7 @@ const ResultPage = () => {
           <div className="flex justify-between">
             <span>Pores:</span>
             <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm">
-              <FaSearch className="text-gray-600" />
-              Visible and congested
+                {finalResult?.skin_overview?.pore}
             </span>
           </div>
 
@@ -84,8 +117,8 @@ const ResultPage = () => {
           <div className="flex justify-between">
             <span>Sensitivity:</span>
             <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm text-red-600">
-              <FaExclamation className="text-red-600" />
-              High - easily irritated
+             {finalResult?.skin_overview?.sensitivity
+}
             </span>
           </div>
 
@@ -93,8 +126,7 @@ const ResultPage = () => {
           <div className="flex justify-between">
             <span>Common concerns:</span>
             <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm text-red-500">
-              <FaThermometerHalf className="text-red-500" />
-              Inflammation
+           {finalResult?.skin_overview?.concerns}
             </span>
           </div>
         </div>
@@ -108,7 +140,7 @@ const ResultPage = () => {
         <p className="text-gray-500 mb-4">Here's what works for FLARE type</p>
 
         <div className="space-y-2">
-          {dos.map((item, idx) => (
+          {finalResult?.dos_and_donts?.do?.map((item, idx) => (
             <div
               key={idx}
               className="flex items-center gap-2 bg-[#EFEADF] rounded-full px-3 py-3 text-green-700"
@@ -118,7 +150,7 @@ const ResultPage = () => {
             </div>
           ))}
 
-          {donts.map((item, idx) => (
+          {finalResult?.dos_and_donts?.dont?.map((item, idx) => (
             <div
               key={idx}
               className="flex items-center gap-2 bg-[#EFEADF] rounded-full px-3 py-3 text-red-700"
@@ -131,17 +163,16 @@ const ResultPage = () => {
       </div>
       {/* Tips */}
       <div className="space-y-6 mt-[30px]">
-        {tips.map((tip, index) => (
+        {finalResult?.tips?.map((tip_item, index) => (
           <div
             key={index}
             className="rounded-xl border border-[#2B2928] border-1 p-4 shadow-sm"
           >
-            <div className="flex items-start gap-2">
-              <span className="text-xl">{tip.icon}</span>
-              <div>
-                <h3 className="font-semibold text-gray-900">{tip.title}</h3>
-                <p className="text-sm text-gray-600 mt-1">{tip.description}</p>
-              </div>
+            <div className="flex items-start flex-col gap-2">
+          
+                <h3 className="font-semibold text-gray-900">{tip_item?.tip}</h3>
+                <p className="text-sm text-gray-600 mt-1">{tip_item.reason}</p>
+             
             </div>
           </div>
         ))}
@@ -155,8 +186,8 @@ const ResultPage = () => {
         </p>
 
         {/* Product cards */}
-        <div className="relative h-[30vh] mb-8">
-          {/* Left card */}
+        {/* <div className="relative h-[30vh] mb-8">
+     
           <div className="absolute top-4 left-0 w-[120px] rotate-[-12deg] bg-[#f0e7f7] rounded-xl shadow-md p-2 text-left text-xs">
             <div className="mb-1 font-semibold text-purple-700">🥶 Tired-out skin</div>
             <img src={TopImage} alt='top-image' className="h-[30px] w-[15px]"/>
@@ -164,7 +195,6 @@ const ResultPage = () => {
             <div className="text-[11px]">Rice Toner + Ceramide Milky</div>
           </div>
 
-          {/* Middle card */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[130px] bg-[#d5e6d8] rotate-[5deg] rounded-xl shadow-md p-2 text-left text-xs z-10">
             <div className="mb-1 font-semibold text-yellow-800">🧬 Cosmeceutical-tested</div>
             <img src={OneBelowImage}  alt='one-step-image' className="h-[80px] w-[45px]"/>
@@ -172,13 +202,15 @@ const ResultPage = () => {
             <div className="text-[11px]">Heartleaf Succinic Moisture Cleansing Foam</div>
           </div>
 
-          {/* Right card */}
           <div className="absolute top-6 right-0 w-[120px] rotate-[10deg] bg-[#fcdde6] rounded-xl shadow-md p-2 text-left text-xs">
             <div className="mb-1 font-semibold text-pink-700">💗 Meltskin</div>
             <img src={twoBelowImage} alt='two-step-image' className="h-[30px] w-[15px]"/>
             <div className="font-medium">PDRN Pink Peptide Serum</div>
             <div className="text-[11px]">30ml</div>
           </div>
+        </div> */}
+        <div>
+          <img src={Product} alt='result_page' />
         </div>
 
         {/* Email input */}
@@ -198,7 +230,8 @@ const ResultPage = () => {
         <span role="img" aria-label="camera">📸</span>
         <span>Share Your Oval Type</span>
       </div>
-    </div>
+    </div>}
+    </>
   )
 }
 

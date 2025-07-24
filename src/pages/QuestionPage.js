@@ -1,20 +1,71 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ALL_QUESTION_LIST } from '../Constant.Others';
 import { MdKeyboardBackspace } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const QuestionPage = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const navigate = useNavigate()
+  const { user_id } = useParams()
+  const [loading, setLoading] = useState(false)
+  const startTimeRef = useRef(Date.now())
+  const [unique, setQuestionSubmitData] = useState([])
+
+
+
+function toRawAnswerFormatFromObject(cleanedAnswers, totalCount = null) {
+  const result = [];
+
+  const keys = Object.keys(cleanedAnswers);
+  const count = totalCount || keys.length;
+
+  for (let i = 0; i < count; i++) {
+    const key = `answer_${i + 1}`;
+    const value = cleanedAnswers[i] ? cleanedAnswers[i] : {};
+    result.push({ [key]: value });
+  }
+
+  return result;
+}
+
+  const handleAnswerSubmit = async (totalTimeInMinutes) => {
+    setLoading(true)
+    const payload = {
+      "answers": toRawAnswerFormatFromObject(answers),
+      "is_quiz_completed": true,
+      "avg_total_time_per_completion": Number(totalTimeInMinutes),
+      "avg_time_per_qst": Number((totalTimeInMinutes / ALL_QUESTION_LIST.length).toFixed(2)),
+    
+    }
+    try {
+      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/oval_skin/questioniar/${user_id}`, payload)
+
+      console.log(data);
+      if(data?.success){
+         navigate(`/result-page/${data?.unique_id}`)
+      }
+
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+
+  }
 
   const handleOptionSelect = (optionText) => {
-    setAnswers({ ...answers, [step]: optionText });
+    const { key, option, skin_type } = optionText
+    setAnswers({ ...answers, [step]: { key, option, skin_type } });
     setTimeout(() => {
       if (step < ALL_QUESTION_LIST.length - 1) {
         setStep(step + 1);
       } else {
-   navigate("/result-page")
+        const endTime = Date.now();
+        const totalTimeInMinutes = ((endTime - startTimeRef.current) / 1000 / 60).toFixed(2);
+        handleAnswerSubmit(totalTimeInMinutes)
+       
       }
     }, 300); // Delay for smooth UX
   };
@@ -28,6 +79,8 @@ const QuestionPage = () => {
   }
 
   const currentQ = ALL_QUESTION_LIST[step];
+
+  console.log("answers", answers)
   return (
     <div className="flex flex-col items-center bg-[#fdfbf8] p-4 h-[100%] font-roboto">
       <div className='flex justify-between w-[100%] text-[20px] mt-2 mb-5'>
@@ -54,16 +107,20 @@ const QuestionPage = () => {
             <h2 className="text-xl font-semibold mb-4 h-[7vh]">{currentQ.question}</h2>
 
             <div className="flex flex-col gap-3">
-              {currentQ.options.map((opt, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleOptionSelect(opt)}
-                  className="flex items-center justify-start gap-2 bg-[#f9f9f9] hover:bg-[#eee] px-4 py-3 rounded-lg shadow text-left"
-                >
-                  <span className="text-xl">{opt.icon}</span>
-                  <span className="text-gray-800">{opt.option}</span>
-                </button>
-              ))}
+              {currentQ.options.map((opt, idx) => {
+                const isSelected = answers[step]?.option === opt.option;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleOptionSelect(opt)}
+                    className={`flex items-center justify-start gap-2 bg-[#f9f9f9] hover:bg-[#eee] px-4 py-3 rounded-lg shadow text-left
+          ${isSelected ? 'border-2 border-green-500' : 'border border-transparent'}`}
+                  >
+                    <span className="text-xl">{opt.icon}</span>
+                    <span className="text-gray-800">{opt.option}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

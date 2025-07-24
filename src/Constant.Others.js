@@ -1,3 +1,12 @@
+import FLARE from "./images/flare-result.png";
+import BLOOM from "./images/boom.png";
+import CLAM from "./images/calm.png";
+import DUSK from "./images/dusk.png";
+import FORGE from "./images/forge.png";
+import GLOW from "./images/glow.png";
+import HAZE from "./images/haze.png";
+import MUSE from "./images/muse.png"
+
 const ALL_QUESTION_LIST = [
   {
     key: 1,
@@ -5,7 +14,7 @@ const ALL_QUESTION_LIST = [
     options: [
       { key: 1, option: "Oily and shiny", icon: "💧", skin_type: [{ FLARE: 2 }] },
       { key: 2, option: "Oily only on the T-zone", icon: "✨", skin_type: [{ GLOW: 1.5 }, { FLARE: 0.5 }] },
-      { key: 3, option: "Pretty normal", icon:"🌿", skin_type: [{ MUSE: 2 }] },
+      { key: 3, option: "Pretty normal", icon: "🌿", skin_type: [{ MUSE: 2 }] },
       { key: 4, option: "Dry or tight", icon: "❄️", skin_type: [{ DUSK: 2 }] }
     ]
   },
@@ -161,5 +170,297 @@ const ALL_QUESTION_LIST = [
   }
 ];
 
+const ALL_RESULT_LIST = {
+  "FLARE": {
+    "skin_type": "FLARE",
+    image:FLARE,
+    "type_subline": "The sensitive visionary",
+    "about": "You shine bright, but your skin burns out just as fast. With excess oil, large pores, and a tendency to flare up at the slightest trigger, you're no stranger to breakouts or sensitivity. But that doesn’t mean your skin is a problem — it just needs skincare that respects the drama without adding more.",
+    "skin_overview": {
+      "sebum_production": "⬆️ High",
+      "pore": "🔍  Visible and congested",
+      "sensitivity": "❗ High - easily irritated",
+      "concerns": "🚨 Inflammation"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Lightweight hydration that won’t clog",
+        "Barrier-repairing (use ceramides & panthenol)",
+        "Gentle tone-balancing (use niacinamide)"
+      ],
+      "dont": [
+        "Over-cleansing or stripping the skin",
+        "High-percentage acids or physical scrubs",
+        "Layering too many actives at once"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "💧 Use a mist throughout the day",
+        "reason": "This way it can keep skin hydrated without layering too many products."
+      },
+      {
+        "tip": "📅  Only double cleanse on certain days",
+        "reason": "Double cleanse only when wearing makeup or sunscreen, not twice daily, to avoid stripping your barrier."
+      }
+    ],
+  },
 
-export {ALL_QUESTION_LIST};
+
+  "GLOW": {
+    "skin_type": "GLOW",
+    image: GLOW,
+    "type_subline": "The golden optimist",
+    "about": "You naturally shine — now let’s make sure it’s the right kind of glow. Your skin is radiant, balanced on the surface, but needs help behind the scenes. With visible pores and a tendency for oil buildup, Glow types often look healthy on the outside while secretly battling congestion, uneven texture, and the occasional breakout.",
+    "skin_overview": {
+      "sebum_production": "🧈 ️ Moderately oily",
+      "pore": "👀  Enlarged or visible",
+      "sensitivity": "👍 Low to moderate",
+      "concerns":"✨ Blackheads and shine"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Lightweight hydration that won’t clog",
+        "Semi-matte sunscreens and breathable layers",
+        "Gentle pore-refining actives (use niacinamide)"
+      ],
+      "dont": [
+        "Overly occlusive creams or oils",
+        "Harsh stripping cleansers",
+        "Ignoring exfoliation"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "💧 Thin Layers > Heavy Creams",
+        "icon": "",
+        "reason": "Layer light textures instead of one heavy product to prevent clogged pores."
+      },
+      {
+        "tip": "🌞 AM Oil Control Hack",
+        "icon": "",
+        "reason": "Use a toner or serum with sebum-balancing ingredients like green tea or zinc PCA in your morning routine."
+      }
+    ],
+  },
+
+
+  "CALM": {
+    "skin_type": "CALM",
+    image: CLAM,
+    "type_subline": "The quiet nurturer",
+    "about": "Your skin is steady and rarely reactive, but it leans dry and delicate. With small, barely visible pores and minimal oil production, Calm types don’t deal with breakouts often — but can easily slip into dullness, dehydration, or premature aging if ignored.",
+    "skin_overview": {
+      "sebum_production": "⬇️️ Low",
+      "pore": "🔍  Barely noticeable",
+      "sensitivity": "👌 Mild",
+      "concerns": "🪠 Dullness"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Consistent hydration in layers",
+        "Barrier-repairing (use ceramides & squalane)",
+        "Antioxidants to protect from signs of aging"
+      ],
+      "dont": [
+        "Strong actives or frequent exfoliation",
+        "Foaming cleansers or anything that strips",
+        "Overloading new products all at once"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "🤓 Skincare Lasagna 101",
+        "icon": "",
+        "reason": "Layer hydration like skincare lasagna — start light, finish creamy."
+      },
+      {
+        "tip": "✨ Keep It Simple",
+        "icon": "",
+        "reason": "Stick to a simple routine with 3–4 solid products you can rely on daily."
+      }
+    ],
+  },
+
+  "DUSK": {
+    "skin_type": "DUSK",
+    image: DUSK,
+    "type_subline": "The moody minimalist",
+    "about": "With dry, small-pored skin and a high tendency for irritation, Dusk types walk a fine line. Your skin barrier is easily overwhelmed — reacting to weather changes, product overload, or even stress. Redness, flaking, or stinging may come and go unpredictably. But once supported with the right routine, your skin softens into a beautifully calm, even-toned state.",
+    "skin_overview": {
+      "sebum_production": "⬇️️  Very low",
+      "pore": "🔍  Barely visible",
+      "sensitivity": "❗ High - easily reative",
+      "concerns": "🚨 Redness"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Ultra-gentle, fragrance-free hydration",
+        "Barrier-repairing (use ceramides & centella) ",
+        "Minimalist, low-irritant products (low pH)"
+      ],
+      "dont": [
+        "Exfoliants (physical or strong chemical)",
+        "Layering too many products at once",
+        "Hot water or over-washing"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "🧪 Test Before You Trust",
+        "reason": "Patch test everything — even “clean” products."
+      },
+      {
+        "tip": "🫧️ Warm > Hot",
+        "reason": "Stick to lukewarm water only when cleansing — hot water can shock the skin."
+      }
+    ],
+    
+  },
+  "BLOOM": {
+    "skin_type": "BLOOM",
+    image: BLOOM,
+    "type_subline": "The delicate dreamer",
+    "about": "Bloom types are beautifully delicate. Your skin tends to be dry, easily irritated, and prone to pigmentation — whether it’s from sun exposure, acne scars, or uneven tone. You’re the type who wants that lit-from-within glow, but harsh actives and aggressive treatments often do more harm than good.",
+    "skin_overview": {
+      "sebum_production": "⬇️️ Low",
+      "pore": "🔍  Small and refined",
+      "sensitivity": "❗ High — reactive to strong products",
+      "concerns": "🚨 Uneven tone"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Brightening ingredients (use niacinamide)",
+        "Skin-calming ingredients (use centella)",
+        "Deep, layered hydration"
+      ],
+      "dont": [
+        "Harsh exfoliants or scrubs",
+        "Vitamin C or retinol at high concentrations",
+        "Skipping moisturizer"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "✨ Brighten Gently",
+        "reason": "Look for tone-evening ingredients that also hydrate — skip anything that stings."
+      },
+      {
+        "tip": "🛡 Build the Base First",
+        "reason": "Barrier repair comes first — your glow will follow."
+      }
+    ],
+  },
+
+  "HAZE": {
+    "skin_type": "HAZE",
+    image:HAZE,
+    "type_subline": "The sensitive visionary",
+    "about": "You’ve got balance — but not immunity. With a mostly calm complexion and medium to large pores, Haze types often look effortlessly smooth. But lurking underneath? A high risk of pigmentation. Whether it's melasma, post-acne marks, or UV spots, your skin loves to hold onto color — especially after inflammation or sun exposure.",
+    "skin_overview": {
+      "sebum_production": "⚖️️ Balanced",
+      "pore": "👀  Medium to large",
+      "sensitivity": "👏 Moderate",
+      "concerns": "🌞 Hyperpigmentation"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Daily SPF (no exceptions)",
+        "Brightening  ingredients (use niacinamide) ",
+        "Antioxidants like Vitamin C"
+      ],
+      "dont": [
+        "Skipping sunscreen (even indoors)",
+        "Harsh scrubs or aggressive peels",
+        "Inconsistent routines"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "🌞️ SPF Is a Daily Ritual",
+        "reason": "Apply sunscreen like it’s skincare — not just protection. Reapply like you rehydrate."
+      },
+      {
+        "tip": "🪷 Calm First, Glow Later",
+        "reason": "Focus on calming first, then brightening — inflammation always leads to pigmentation."
+      }
+    ],
+    
+  },
+  "FORGE": {
+    "skin_type": "FORGE",
+    image: FORGE,
+    "type_subline": "The resilient powerhouse",
+    "about": "Forge skin has grit. With a naturally tough barrier, visible oil, and a tendency toward pigmentation or roughness, your skin doesn’t complain easily — but that doesn’t mean it’s invincible. You might get dark spots, texture issues, or the occasional breakout when you push it too hard (or ignore it for too long).",
+    "skin_overview": {
+      "sebum_production": "⬆️ High",
+      "pore": "👀 Visible and large",
+      "sensitivity": "💪 Low - strong barrier",
+      "concerns":"🌞 Pigmentation"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Brightening ingredients (use azelaic acid)",
+        "Regular (gentle) exfoliation for smoother skin",
+        "Lightweight hydration that won’t clog pores"
+      ],
+      "dont": [
+        "Heavy oils or rich creams that suffocate pores",
+        "Skipping sunscreen — dark spots will linger",
+        "Ignoring hydration (oily ≠ moisturized)"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "💧 Oil ≠ Moisture",
+        "reason": "Balance oil with calming hydration — don’t fight your skin, work with it."
+      },
+      {
+        "tip": "🌞 Fade with Patience",
+        "reason": "Pigment fades faster when you exfoliate gently and protect daily."
+      }
+    ],
+    
+  },
+  "MUSE": {
+    "skin_type": "MUSE",
+    image: MUSE,
+    "type_subline": "The effortless idealist",
+    "about": "Muse skin is what many would call “good skin” — balanced oil levels, small pores, and minimal drama. You rarely break out, rarely react, and mostly just… glow. But here’s the catch: because your skin behaves, it’s easy to neglect it. And over time, that can mean dehydration, dullness, or early signs of aging.",
+    "skin_overview": {
+      "sebum_production": "⚖️️ Balanced",
+      "pore": "🔍  Small to medium",
+      "sensitivity": "💪 Low — resilient",
+      "concerns":"💧 Dehydration"
+    },
+    "dos_and_donts": {
+      "do": [
+        "Light antioxidant protection",
+        "Daily moisture maintenance ",
+        "Consistency more than complexity"
+      ],
+      "dont": [
+        "Skipping skincare (good skin still ages!)",
+        "Overloading actives or trendy ingredients",
+        "Inconsistent hydration"
+      ]
+    },
+    "tips": [
+      {
+        "tip": "🌻 Maintain the Muse",
+        "reason": "Don’t get lazy — your skin’s calm now, but it needs quiet care to stay that way."
+      },
+      {
+        "tip": "✨Serum-First Strategy",
+        "reason": "Light serums with peptides or firming ingredients go a long way for prevention."
+      }
+    ],
+    
+  }
+}
+
+
+export {
+  ALL_QUESTION_LIST,
+  ALL_RESULT_LIST,
+};

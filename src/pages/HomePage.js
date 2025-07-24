@@ -10,10 +10,12 @@ import ST6 from "../images/s6.png"
 import ST7 from "../images/s7.png"
 import ST8 from "../images/s8.png"
 import axios from 'axios';
+import { detect } from "detect-browser";
 
 const HomePage = () => {
     const navigate = useNavigate();
     const [ipData, setIpData] = useState(null);
+    const [browserDetails, setBrowserDetails] = useState("")
     const [buttonLoading, setButtonLoading] = useState()
 
 
@@ -26,7 +28,6 @@ const HomePage = () => {
     useEffect(() => {
         axios.get('http://ip-api.com/json')
             .then((res) => {
-                console.log('User IP Info:', res.data);
                 setIpData(res.data);
             })
             .catch((err) => {
@@ -34,10 +35,9 @@ const HomePage = () => {
             });
     }, []);
 
-    console.log("process.env.REACT_BACKEND_API", process.env.REACT_APP_BACKEND_API)
-
     const handleStartTest = async () => {
         setButtonLoading(true)
+        const browser_data = detect();
         const payload = {
             unique_id: generateUniqueUserId(),
             country: ipData?.country,
@@ -46,23 +46,27 @@ const HomePage = () => {
             region: ipData?.regionName,
             zip: ipData?.zip,
             timezone: ipData?.timezone,
-            city: ipData?.city
+            city: ipData?.city,
+            browser: browser_data?.name,
+            device_type: browser_data?.os
         }
         try {
-            const response_data = await axios.post(`${process.env.REACT_APP_BACKEND_API}/oval_skin`, payload)
-            console.log("response_data", response_data)
+            const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/oval_skin`, payload)
+            console.log("response_data", data)
+            if (data.success) {
+                navigate(`/question-page/${data?.data?.unique_id}`);
+            }
 
 
         } catch (error) {
+            console.log(error)
 
         } finally {
             setButtonLoading(false)
         }
-        navigate('/question-page');
+
     };
 
-
-    console.log("ipData", ipData)
 
     return (
         <div className="flex flex-col items-center  pt-[20px] bg-[#FAF9F5] h-[100vh]">
@@ -108,13 +112,17 @@ const HomePage = () => {
                 </button> */}
                 <button
                     onClick={handleStartTest}
-                    className="bg-[#9C836B] text-white px-6 py-3 rounded-xl text-[1.2rem] mt-6 md:text-base hover:bg-blue-700 transition duration-300 shadow-md flex items-center justify-center"
+                    className="bg-[#9C836B] text-white px-6 py-3 rounded-xl text-[1.2rem] mt-6 md:text-base hover:bg-[#9C836B] transition duration-300 shadow-md flex items-center justify-center relative"
                     disabled={buttonLoading}
                 >
                     {buttonLoading && (
-                        <span className="inline-block w-5 h-5 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span className="absolute inset-0 flex items-center justify-center">
+                            <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        </span>
                     )}
-                    {buttonLoading ? "Start the skin quiz" : "Start the skin quiz"}
+                    <span className={buttonLoading ? "opacity-40" : ""}>
+                        Start the skin quiz
+                    </span>
                 </button>
             </div>
         </div>
