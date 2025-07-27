@@ -125,7 +125,7 @@ const ResultPage = () => {
 
       {!loading && <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-noto'>
         <div className='flex justify-between mt-[30px] item-center'>
-          <div className='w-[90%] text-center text-[18px]'>Your oval type is</div>
+          <div className='w-[95%] text-center text-[18px] ml-[25px]'>Your oval type is</div>
 
           <IoMdShare size={25} className='mt-2' onClick={() => setShareModal(true)} />
 
