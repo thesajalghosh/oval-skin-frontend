@@ -186,7 +186,7 @@ const QuestionPage = () => {
                     <button
                       key={idx}
                       onClick={() => handleOptionSelect(opt)}
-                      className={`flex items-center justify-center gap-2 bg-white px-4 py-3 rounded-[16px] shadow text-[16px] text-gray-800
+                      className={`flex items-center justify-center gap-2 bg-white bg-[#9c836b] px-4 py-3 rounded-[16px] shadow text-[16px] text-gray-800
               ${isSelected ? 'bg-[#9c836b] text-white' : 'border border-transparent'}`}
                     >
                       <span className="text-xl">{opt.icon}</span>
