@@ -15,6 +15,7 @@ import GLOW_D from "../images/GLOW_D.jpg"
 import HAZE_D from "../images/HAZE_D.jpg"
 import MUSE_D from "../images/MUSE_D.jpg"
 import axios from 'axios';
+import { RxCross2 } from "react-icons/rx";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -25,12 +26,16 @@ import {
   WhatsappIcon,
   LinkedinIcon,
 } from 'react-share';
+import { BiCheckCircle } from 'react-icons/bi';
+import { ToastContainer } from 'react-toastify';
 
 const ResultPage = () => {
   const [finalResult, setFinalResult] = useState({})
   const [loading, setLoading] = useState(true)
   const { user_id } = useParams()
   const [shareModal, setShareModal] = useState(false)
+  const [emailSendModal, setEmailSendModal] = useState(false)
+  const [inputValue, setInputValue] = useState("")
   const IMAGE_MAP = {
     "FLARE": FLARE_D,
     "BLOOM": BLOOM_D,
@@ -45,24 +50,20 @@ const ResultPage = () => {
   // ...existing code...
   const getResultDetails = async () => {
     setLoading(true);
-    const start = Date.now();
+
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/oval_skin/${user_id}`);
       // setFinalResult(data); // Uncomment and use if you want to update finalResult with API data
       console.log("ALL_RESULT_LIST?.[data?.skin_type]", ALL_RESULT_LIST?.[data?.data?.result_type], data?.data?.result_type)
-      setFinalResult(ALL_RESULT_LIST?.[data?.data?.result_type])
+      if (data.success) {
+        setFinalResult(ALL_RESULT_LIST?.[data?.data?.result_type])
+
+      }
       console.log(data)
     } catch (error) {
       console.log(error);
     } finally {
-      const elapsed = Date.now() - start;
-      const minLoading = 12000; // 15 seconds in ms
-      const remaining = minLoading - elapsed;
-      if (remaining > 0) {
-        setTimeout(() => setLoading(false), remaining);
-      } else {
-        setLoading(false);
-      }
+      setLoading(false)
     }
   }
   // ...existing code...
@@ -89,37 +90,48 @@ const ResultPage = () => {
     document.body.removeChild(link);
   }
 
+
+  const handleSendEmail = async () => {
+    setEmailSendModal(true)
+    try {
+      const { data } = await axios.patch(
+        `${process.env.REACT_APP_BACKEND_API}/oval_skin/update_single_feild/${user_id}`,
+        {
+          email: inputValue
+        }
+      );
+
+      console.log("data")
+
+    } catch (error) {
+
+      console.log(error);
+    } finally {
+    }
+  }
+
+  console.log("emailSendModal", emailSendModal)
   return (
     <>
       {loading && (
-        <div className="h-screen flex flex-col justify-center items-center bg-[#FCFBF8] text-center">
-          {/* Dots */}
-          <div className="flex gap-3 mb-6">
-            <span className="dot dot1"></span>
-            <span className="dot dot2"></span>
-            <span className="dot dot3"></span>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+          <div className="flex flex-col items-center">
+            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <div className="text-lg text-gray-700 font-semibold">Loading...</div>
           </div>
-
-          {/* Text */}
-          <h2 className="font-semibold text-[1.5rem] text-[#262522] mb-1 mx-[40px]">
-            Analyzing your skin persona…
-          </h2>
-          <p className="text-sm text-[#262522] opacity-80">
-            Your Oval Type is almost ready
-          </p>
         </div>
       )}
 
 
-      {!loading && <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-roboto'>
+      {!loading && <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-noto'>
         <div className='flex justify-between mt-[30px] item-center'>
-          <div className='w-[90%] text-center text-[25px]'>Your oval type is</div>
+          <div className='w-[90%] text-center text-[18px]'>Your oval type is</div>
 
-          <IoMdShare size={25} className='mt-2' onClick={()=>setShareModal(true)}/>
+          <IoMdShare size={25} className='mt-2' onClick={() => setShareModal(true)} />
 
         </div>
-        <h2 className='text-center text-[1.5rem] font-bold'>{finalResult?.skin_type}</h2>
-        <p className='text-center'>{finalResult?.type_subline}</p>
+        <h2 className='text-center text-[1.5rem] font-bold mt-[16px]'>{finalResult?.skin_type}</h2>
+        <p className='text-center mt-[4px]'>{finalResult?.type_subline}</p>
 
         <div className='flex item-center justify-center relative mt-[10px]'>
 
@@ -127,17 +139,17 @@ const ResultPage = () => {
           <img src={finalResult?.image} alt='image_result' className='absolute top-0 left-[30%]' />
         </div>
         {/* about section */}
-        <div className="border border-2 rounded-xl p-4 text-left border-black mt-6">
+        <div className="border border-[1px]  border-[#2b2928] rounded-[18px] p-6 text-left mt-6 font-noto">
           <div className="flex items-center gap-2 mb-2">
             <FaRegStickyNote className="text-gray-700" />
-            <p className="font-semibold text-gray-800">About your oval type</p>
+            <p className="font-bold text-gray-800 text-[18px] font-noto">About your oval type</p>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 font-noto text-[16px]">
             {finalResult?.about}
           </p>
         </div>
         {/* skin overview */}
-        <div className="bg-white w-full rounded-xl p-6 shadow-md w-fit max-w-md mt-[20px]">
+        <div className="bg-white w-full rounded-[25px] p-6 shadow-md w-fit max-w-md mt-[20px] border border-[1px] border-[#e0e0e0]">
           <div className="flex items-center mb-4 text-lg font-semibold">
             <FaSearch className="mr-2 text-gray-500" />
             Skin overview
@@ -147,7 +159,7 @@ const ResultPage = () => {
             {/* Sebum production */}
             <div className="flex justify-between">
               <span>Sebum production:</span>
-              <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm">
+              <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.sebum_production}
               </span>
             </div>
@@ -155,7 +167,7 @@ const ResultPage = () => {
             {/* Pores */}
             <div className="flex justify-between">
               <span>Pores:</span>
-              <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm">
+           <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.pore}
               </span>
             </div>
@@ -163,7 +175,7 @@ const ResultPage = () => {
             {/* Sensitivity */}
             <div className="flex justify-between">
               <span>Sensitivity:</span>
-              <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm text-red-600">
+             <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.sensitivity
                 }
               </span>
@@ -172,7 +184,7 @@ const ResultPage = () => {
             {/* Common concerns */}
             <div className="flex justify-between">
               <span>Common concerns:</span>
-              <span className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full text-sm text-red-500">
+             <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.concerns}
               </span>
             </div>
@@ -180,7 +192,7 @@ const ResultPage = () => {
         </div>
         {/* dos and donts */}
         <div className=" w-full max-w-md text-sm mt-[30px]">
-          <div className="mb-2 font-semibold text-base flex items-center gap-2">
+          <div className="font-bold text-base flex items-center gap-2 text-[18px] font-noto">
             <span>✅❌</span>
             Your glow routine Do’s and Don’ts
           </div>
@@ -190,9 +202,9 @@ const ResultPage = () => {
             {finalResult?.dos_and_donts?.do?.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-2 bg-[#EFEADF] rounded-full px-3 py-3 text-green-700"
+                className="flex items-center gap-2 bg-[#EFEADF] rounded-full px-3 py-3 text-[14px]"
               >
-                <FaCheckCircle className="text-green-600" size={20} />
+                <FaCheckCircle className="text-[#6bad4c]" size={20} />
                 <span className="text-gray-800">{item}</span>
               </div>
             ))}
@@ -200,9 +212,9 @@ const ResultPage = () => {
             {finalResult?.dos_and_donts?.dont?.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-2 bg-[#EFEADF] rounded-full px-3 py-3 text-red-700"
+                className="flex items-center gap-2 bg-[#EFEADF] rounded-full px-3 py-3 text-[14px]"
               >
-                <FaTimesCircle className="text-red-600" size={20} />
+                <FaTimesCircle className="text-[#d95353]" size={20} />
                 <span className="text-gray-800">{item}</span>
               </div>
             ))}
@@ -225,10 +237,10 @@ const ResultPage = () => {
           ))}
         </div>
         {/* personalize message */}
-        <div className="max-w-sm mx-auto bg-white rounded-2xl p-6 shadow-md text-center mt-[30px]">
+        <div className="max-w-sm mx-auto bg-white rounded-[25px] p-6 shadow-md text-center mt-[30px] border border-[1px]  border-[#e0e0e0] font-noto">
           {/* Title */}
-          <h2 className="text-xl font-semibold mb-2">Tailored just for you</h2>
-          <p className="text-gray-600 text-sm mb-6">
+          <h2 className="text-[24px] font-normal mb-2 font-noto">Tailored just for you</h2>
+          <p className="text-gray-600 text-[16px] mb-6 font-noto">
             Your personalized lineup of trending K-beauty picks — chosen to bring balance, calm, and glow to your skin.
           </p>
 
@@ -265,9 +277,11 @@ const ResultPage = () => {
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-rose-200 text-sm"
+              value={inputValue}
+              className="w-full h-[56px] px-4 py-2 border rounded-[16px] focus:outline-none focus:border-[#9C836B] text-[16px] font-noto"
+              onChange={(e) => setInputValue(e.target.value)}
             />
-            <button className="w-full bg-[#8b6f5e] hover:bg-[#775c4d] text-white font-medium py-2 rounded-full text-sm">
+            <button className="w-full h-[56px] bg-[#8b6f5e] hover:bg-[#775c4d] text-white font-medium py-2 rounded-[16px] text-[16px] font-noto" onClick={() => handleSendEmail()}>
               Get my routine
             </button>
           </div>
@@ -284,10 +298,10 @@ const ResultPage = () => {
         </div>
       </div>}
 
-    {shareModal && (
-  <>
-    
-    {/* <div
+      {shareModal && (
+        <>
+
+          {/* <div
       className="fixed inset-0 bg-black bg-opacity-40 z-40"
       onClick={() => setShareModal(false)}
     >
@@ -330,39 +344,66 @@ const ResultPage = () => {
       </button>
     </div> */}
 
-     <div
-      className="fixed inset-0 bg-black bg-opacity-40 z-40"
-      onClick={() => setShareModal(false)}
-    ></div>
-    <div className="fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-lg p-6 flex flex-col items-center animate-slide-up">
-      <div className="w-12 h-1 bg-gray-300 rounded-full mb-4"></div>
-      <h3 className="text-lg font-semibold mb-2">Share your Oval Type</h3>
-      <p className="text-gray-600 mb-4 text-center">
-        Share your result with friends!
-      </p>
-      <div className="flex gap-4 mb-4">
-        <FacebookShareButton url={window.location.href} quote="Check out my Oval Type result!">
-          <FacebookIcon size={40} round />
-        </FacebookShareButton>
-        <TwitterShareButton url={window.location.href} title="Check out my Oval Type result!">
-          <TwitterIcon size={40} round />
-        </TwitterShareButton>
-        <WhatsappShareButton url={window.location.href} title="Check out my Oval Type result!">
-          <WhatsappIcon size={40} round />
-        </WhatsappShareButton>
-        <LinkedinShareButton url={window.location.href} title="Check out my Oval Type result!">
-          <LinkedinIcon size={40} round />
-        </LinkedinShareButton>
-      </div>
-      <button
-        className="text-gray-500 mt-2"
-        onClick={() => setShareModal(false)}
-      >
-        Close
-      </button>
-    </div>
-    </>)}
-    
+          <div
+            className="fixed inset-0 bg-black bg-opacity-40 z-40"
+            onClick={() => setShareModal(false)}
+          ></div>
+          <div className="fixed left-0 right-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-lg p-6 flex flex-col items-center animate-slide-up">
+            <div className="w-12 h-1 bg-gray-300 rounded-full mb-4"></div>
+            <h3 className="text-lg font-semibold mb-2">Share your Oval Type</h3>
+            <p className="text-gray-600 mb-4 text-center">
+              Share your result with friends!
+            </p>
+            <div className="flex gap-4 mb-4">
+              <FacebookShareButton url={window.location.href} quote="Check out my Oval Type result!">
+                <FacebookIcon size={40} round />
+              </FacebookShareButton>
+              <TwitterShareButton url={window.location.href} title="Check out my Oval Type result!">
+                <TwitterIcon size={40} round />
+              </TwitterShareButton>
+              <WhatsappShareButton url={window.location.href} title="Check out my Oval Type result!">
+                <WhatsappIcon size={40} round />
+              </WhatsappShareButton>
+              <LinkedinShareButton url={window.location.href} title="Check out my Oval Type result!">
+                <LinkedinIcon size={40} round />
+              </LinkedinShareButton>
+            </div>
+            <button
+              className="text-gray-500 mt-2"
+              onClick={() => setShareModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </>)}
+
+      {emailSendModal && (
+        <div
+          className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 animate-slide-down bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 flex items-start space-x-3 w-full w-[90%] shadow-sm"
+          style={{ animation: 'slideDown 0.5s' }}
+        >
+          <BiCheckCircle className="text-green-500" size={35} />
+          <div>
+            <p className="font-semibold">Sent!</p>
+            <p>Your personalized routine is on its way—check your inbox!</p>
+          </div>
+          <RxCross2 size={35} onClick={() => setEmailSendModal(false)} />
+        </div>
+      )}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
     </>
   )
 }

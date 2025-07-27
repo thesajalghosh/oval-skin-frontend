@@ -7,7 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 .dot {
-  @apply w-3 h-3 rounded-full bg-[#F3E9DA];
+  @apply w-5 h-5 rounded-full bg-[#F3E9DA];
   animation: pulseDot 1.5s infinite;
 }
 

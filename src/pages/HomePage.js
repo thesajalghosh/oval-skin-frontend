@@ -29,7 +29,6 @@ const HomePage = () => {
             });
     }, []);
 
-    console.log("ipData", ipData)
     const handleStartTest = async () => {
         setButtonLoading(true)
         const browser_data = detect();
@@ -47,7 +46,6 @@ const HomePage = () => {
         }
         try {
             const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/oval_skin`, payload)
-            console.log("response_data", data)
             if (data.success) {
                 navigate(`/question-page/${data?.data?.unique_id}`);
             }
@@ -64,7 +62,7 @@ const HomePage = () => {
     return (
         <div className="flex flex-col items-center  pt-[20px] bg-[#FAF9F5] h-[100vh]">
             <div className='flex justify-center w-[100%] mt-[20px]'>
-                <img src={LOGO} alt='logo' className='h-[20px] w-[70px]' />
+                <img src={LOGO} alt='logo' className='h-[20px] w-[55px]' />
             </div>
             <div className='flex flex-col justify-center items-center w-[100%] mt-[20px]'>
 
@@ -75,7 +73,7 @@ const HomePage = () => {
                 <img src={ALL_IMAGE} alt='image_result' className='absolute top-0 left-[5%] ' />
       </div>
                 <div>
-                    <h1 className="text-[30px] font-semibold text-gray-800 leading-tight flex flex-col mt-4 font-noto">
+                    <h1 className="text-[42px] font-semibold text-gray-800 leading-tight flex flex-col mt-4 font-noto">
                         <span >
                             What’s Your
                         </span>{" "}
@@ -84,7 +82,7 @@ const HomePage = () => {
                         </span>
                     </h1>
                 </div>
-                <div className='font-noto flex flex-col items-center justify-center text-[13px] mt-2'>
+                <div className='font-noto flex flex-col items-center justify-center text-[15px] mt-2'>
 
                     <p>Discover and decode your skin</p>
                     <p>personality</p>
@@ -97,7 +95,7 @@ const HomePage = () => {
                 </button> */}
                 <button
                     onClick={handleStartTest}
-                    className="bg-[#9C836B] text-white px-6 py-3 rounded-xl text-[1.2rem] mt-6 md:text-base hover:bg-[#9C836B] transition duration-300 shadow-md flex items-center justify-center relative"
+                    className="bg-[#9C836B] text-white px-6 py-3 rounded-xl text-[16px] mt-6 md:text-base hover:bg-[#9C836B] transition duration-300 shadow-md flex items-center justify-center relative"
                     disabled={buttonLoading}
                 >
                     {buttonLoading && (
