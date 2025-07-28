@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LOGO from "../images/logo.png"
-import ALL_IMAGE from "../images/group_image.png"
+import ALL_IMAGE from "../images/group_image.svg"
 import Ellipse from "../images/main_ellp.png"
 import axios from 'axios';
 import { detect } from "detect-browser";
@@ -103,8 +103,8 @@ const HomePage = () => {
                             <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                         </span>
                     )}
-                    <span className={buttonLoading ? "opacity-40" : ""}>
-                        Start the skin quiz
+                    <span className={buttonLoading ? "opacity-0" : ""}>
+                      ✨ Start the skin quiz
                     </span>
                 </button>
             </div>

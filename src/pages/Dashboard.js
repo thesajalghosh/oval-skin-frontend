@@ -139,7 +139,13 @@ const Dashboard = () => {
               <h2 className="text-xl font-semibold text-gray-800 capitalize">{activeSection}</h2>
             </div>
             <div className="flex items-center gap-4 text-sm text-gray-600">
-              <span className="hidden sm:block">Monday, July 22</span>
+              <span className="hidden sm:block">
+                {new Date().toLocaleDateString("en-US", {
+                  weekday: "long",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
             </div>
           </div>
 
@@ -220,7 +226,7 @@ const UserDetailsTable = () => {
       );
       if (data?.success) {
         setAllUser(data?.data?.questioniars || []);
-        setTotalPages(data?.data?.totalPages || 1);
+        setTotalPages(data?.total_pages || 1);
       }
     } catch (error) {
       console.log(error);
@@ -264,7 +270,7 @@ const UserDetailsTable = () => {
             ) : (
               allUser.map((user) => (
                 <tr
-                  key={user.id}
+                  key={user._id}
                   className="hover:bg-gray-50 transition duration-200"
                 >
                   <td className="px-4 py-3 border font-medium text-gray-800">
@@ -287,14 +293,14 @@ const UserDetailsTable = () => {
                       User details
                     </button> */}
                     <Link
-                     to={`/dashboard/user-details/${user.unique_id}`}    
+                      to={`/dashboard/user-details/${user.unique_id}`}
                       target="_blank"
                       className="text-blue-600 hover:text-blue-800  font-medium text-center flex item-center justify-center gap-2"
-                      >
-                    <span>
-                      User details
-                      </span> 
-                        <FaExternalLinkAlt size={17} className="mt-1"/>
+                    >
+                      <span>
+                        User details
+                      </span>
+                      <FaExternalLinkAlt size={17} className="mt-1" />
                     </Link>
                   </td>
                 </tr>

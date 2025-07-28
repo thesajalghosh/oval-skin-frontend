@@ -88,7 +88,7 @@ const QuestionPage = () => {
       console.log(error);
     } finally {
       const elapsed = Date.now() - start;
-      const minLoading = 6000; // 12 seconds
+      const minLoading = 3000; // 3 seconds
       const remaining = minLoading - elapsed;
 
       const finish = () => {

@@ -16,6 +16,7 @@ import HAZE_D from "../images/HAZE_D.jpg"
 import MUSE_D from "../images/MUSE_D.jpg"
 import axios from 'axios';
 import { RxCross2 } from "react-icons/rx";
+import { MdOutlineErrorOutline } from "react-icons/md";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -35,7 +36,9 @@ const ResultPage = () => {
   const { user_id } = useParams()
   const [shareModal, setShareModal] = useState(false)
   const [emailSendModal, setEmailSendModal] = useState(false)
+  const [emailSuccess, setEmailSuccess] = useState(false)
   const [inputValue, setInputValue] = useState("")
+  const [emailSendButtonLoading, setEmailSendButtonLoading] = useState()
   const IMAGE_MAP = {
     "FLARE": FLARE_D,
     "BLOOM": BLOOM_D,
@@ -54,12 +57,10 @@ const ResultPage = () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/oval_skin/${user_id}`);
       // setFinalResult(data); // Uncomment and use if you want to update finalResult with API data
-      console.log("ALL_RESULT_LIST?.[data?.skin_type]", ALL_RESULT_LIST?.[data?.data?.result_type], data?.data?.result_type)
       if (data.success) {
         setFinalResult(ALL_RESULT_LIST?.[data?.data?.result_type])
 
       }
-      console.log(data)
     } catch (error) {
       console.log(error);
     } finally {
@@ -92,7 +93,8 @@ const ResultPage = () => {
 
 
   const handleSendEmail = async () => {
-    setEmailSendModal(true)
+    setEmailSendButtonLoading(true)
+
     try {
       const { data } = await axios.patch(
         `${process.env.REACT_APP_BACKEND_API}/oval_skin/update_single_feild/${user_id}`,
@@ -100,34 +102,54 @@ const ResultPage = () => {
           email: inputValue
         }
       );
-
-      console.log("data")
+      if (data?.success) {
+            setEmailSendModal(true)
+        setEmailSuccess(data?.is_email_sent)
+      }
 
     } catch (error) {
 
       console.log(error);
     } finally {
+      setEmailSendButtonLoading(false)
     }
   }
 
-  console.log("emailSendModal", emailSendModal)
+  const handleShareButton = async ()=>{
+    try {
+
+        const { data } = await axios.patch(
+        `${process.env.REACT_APP_BACKEND_API}/oval_skin/update_single_feild/${user_id}`,
+        {
+      is_share : true
+        }
+      );
+      
+    } catch (error) {
+      
+    }
+  }
+
+  const handleShareIcon = ()=>{
+handleShareButton()
+setShareModal(true)
+  }
+
   return (
     <>
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
           <div className="flex flex-col items-center">
-            <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#8b6f5e] border-t-transparent rounded-full animate-spin mb-4"></div>
             <div className="text-lg text-gray-700 font-semibold">Loading...</div>
           </div>
         </div>
       )}
-
-
       {!loading && <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-noto'>
         <div className='flex justify-between mt-[30px] item-center'>
           <div className='w-[95%] text-center text-[18px] ml-[25px]'>Your oval type is</div>
 
-          <IoMdShare size={25} className='mt-2' onClick={() => setShareModal(true)} />
+          <IoMdShare size={25} className='mt-2' onClick={() => handleShareIcon()} />
 
         </div>
         <h2 className='text-center text-[1.5rem] font-bold mt-[16px]'>{finalResult?.skin_type}</h2>
@@ -167,7 +189,7 @@ const ResultPage = () => {
             {/* Pores */}
             <div className="flex justify-between">
               <span>Pores:</span>
-           <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
+              <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.pore}
               </span>
             </div>
@@ -175,7 +197,7 @@ const ResultPage = () => {
             {/* Sensitivity */}
             <div className="flex justify-between">
               <span>Sensitivity:</span>
-             <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
+              <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.sensitivity
                 }
               </span>
@@ -184,7 +206,7 @@ const ResultPage = () => {
             {/* Common concerns */}
             <div className="flex justify-between">
               <span>Common concerns:</span>
-             <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
+              <span className="flex items-center gap-1 bg-[#efeadf] px-2 py-1 rounded-full font-noto font-bold text-[12px]">
                 {finalResult?.skin_overview?.concerns}
               </span>
             </div>
@@ -225,7 +247,7 @@ const ResultPage = () => {
           {finalResult?.tips?.map((tip_item, index) => (
             <div
               key={index}
-              className="rounded-xl border border-[#2B2928] border-1 p-4 shadow-sm"
+              className="rounded-xl border border-[#2B2928] border-[1px] border-1 p-4 shadow-sm"
             >
               <div className="flex items-start flex-col gap-2">
 
@@ -245,29 +267,6 @@ const ResultPage = () => {
           </p>
 
           {/* Product cards */}
-          {/* <div className="relative h-[30vh] mb-8">
-     
-          <div className="absolute top-4 left-0 w-[120px] rotate-[-12deg] bg-[#f0e7f7] rounded-xl shadow-md p-2 text-left text-xs">
-            <div className="mb-1 font-semibold text-purple-700">🥶 Tired-out skin</div>
-            <img src={TopImage} alt='top-image' className="h-[30px] w-[15px]"/>
-            <div className="font-medium">Anua</div>
-            <div className="text-[11px]">Rice Toner + Ceramide Milky</div>
-          </div>
-
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[130px] bg-[#d5e6d8] rotate-[5deg] rounded-xl shadow-md p-2 text-left text-xs z-10">
-            <div className="mb-1 font-semibold text-yellow-800">🧬 Cosmeceutical-tested</div>
-            <img src={OneBelowImage}  alt='one-step-image' className="h-[80px] w-[45px]"/>
-            <div className="font-medium">Anua</div>
-            <div className="text-[11px]">Heartleaf Succinic Moisture Cleansing Foam</div>
-          </div>
-
-          <div className="absolute top-6 right-0 w-[120px] rotate-[10deg] bg-[#fcdde6] rounded-xl shadow-md p-2 text-left text-xs">
-            <div className="mb-1 font-semibold text-pink-700">💗 Meltskin</div>
-            <img src={twoBelowImage} alt='two-step-image' className="h-[30px] w-[15px]"/>
-            <div className="font-medium">PDRN Pink Peptide Serum</div>
-            <div className="text-[11px]">30ml</div>
-          </div>
-        </div> */}
           <div>
             <img src={Product} alt='result_page' />
           </div>
@@ -281,9 +280,21 @@ const ResultPage = () => {
               className="w-full h-[56px] px-4 py-2 border rounded-[16px] focus:outline-none focus:border-[#9C836B] text-[16px] font-noto"
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <button className="w-full h-[56px] bg-[#8b6f5e] hover:bg-[#775c4d] text-white font-medium py-2 rounded-[16px] text-[16px] font-noto" onClick={() => handleSendEmail()}>
-              Get my routine
+            <button
+              className="relative w-full h-[56px] bg-[#8b6f5e] hover:bg-[#775c4d] text-white font-medium py-2
+             rounded-[16px] text-[16px] font-noto"
+              onClick={handleSendEmail}
+            >
+              {emailSendButtonLoading && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                </span>
+              )}
+              <span className={emailSendButtonLoading ? "opacity-0" : ""}>
+                Get my routine
+              </span>
             </button>
+
           </div>
         </div>
         {/* share option */}
@@ -378,17 +389,37 @@ const ResultPage = () => {
         </>)}
 
       {emailSendModal && (
-        <div
-          className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-500 animate-slide-down bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 flex items-start space-x-3 w-full w-[90%] shadow-sm"
-          style={{ animation: 'slideDown 0.5s' }}
-        >
-          <BiCheckCircle className="text-green-500" size={35} />
-          <div>
-            <p className="font-semibold">Sent!</p>
-            <p>Your personalized routine is on its way—check your inbox!</p>
-          </div>
-          <RxCross2 size={35} onClick={() => setEmailSendModal(false)} />
-        </div>
+        <>
+          {emailSuccess ?
+            <div
+              className="fixed w-[90%] top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all
+           duration-500 animate-slide-down bg-gradient-to-r from-green-50 to-white border border-green-200 text-green-800
+            rounded-xl p-4 flex items-start space-x-3 w-[90%] shadow-sm"
+              style={{ animation: 'slideDown 0.5s' }}
+            >
+              <BiCheckCircle className="text-green-500" size={35} />
+              <div>
+                <p className="font-semibold text-sm text-gray-800">Sent!</p>
+                <p>Your personalized routine is on its way—check your inbox!</p>
+              </div>
+              <RxCross2 size={35} onClick={() => setEmailSendModal(false)} />
+            </div> :
+            <div
+              className="fixed w-[90%] top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all
+           duration-500 animate-slide-down  border-1 border-red-500 bg-gradient-to-r from-red-100 to-red-50
+            text-green-800 rounded-xl p-4 flex items-start space-x-3 w-[90%] shadow-sm"
+              style={{ animation: 'slideDown 0.5s' }}
+            >
+              <MdOutlineErrorOutline className="text-red-500" size={35} />
+              <div>
+                <p className="font-semibold text-[18px] text-gray-800">Let’s try that again</p>
+                <p className='text-sm text-gray-600'>Make sure your email is typed correctly and try once more.</p>
+              </div>
+              <RxCross2 size={35} onClick={() => setEmailSendModal(false)} />
+            </div>
+
+          }
+        </>
       )}
 
       <ToastContainer
