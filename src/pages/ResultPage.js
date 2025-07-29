@@ -176,8 +176,8 @@ const ResultPage = () => {
         {/* about section */}
         <div className="border border-[1px]  border-[#2b2928] rounded-[18px] p-6 text-left font-noto">
           <div className="flex items-center gap-2 mb-2">
-            <FaRegStickyNote className="text-gray-700" />
-            <p className="font-bold text-gray-800 text-[18px] font-noto">About your oval type</p>
+            {/* <FaRegStickyNote className="text-gray-700" /> */}
+            <p className="font-bold text-gray-800 text-[18px] font-noto">🧬 About your oval type</p>
           </div>
           <p className="text-sm text-gray-600 font-noto text-[16px]">
             {finalResult?.about}
