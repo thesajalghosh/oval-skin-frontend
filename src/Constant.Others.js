@@ -1,11 +1,11 @@
-import FLARE from "./images/flare-result.png";
-import BLOOM from "./images/boom.png";
-import CLAM from "./images/calm.png";
-import DUSK from "./images/dusk.png";
-import FORGE from "./images/forge.png";
-import GLOW from "./images/glow.png";
-import HAZE from "./images/haze.png";
-import MUSE from "./images/muse.png"
+import FLARE from "./images/Flare.svg";
+import BLOOM from "./images/Bloom.svg";
+import CLAM from "./images/Calm.svg";
+import DUSK from "./images/Dusk.svg";
+import FORGE from "./images/Forge.svg";
+import GLOW from "./images/Glow.svg";
+import HAZE from "./images/Haze.svg";
+import MUSE from "./images/Muse.svg"
 
 const ALL_QUESTION_LIST = [
   {
@@ -72,8 +72,8 @@ const ALL_QUESTION_LIST = [
     key: 7,
     question: "How does your skin feel to the touch?",
     options: [
-      { key: 1, option: "Rough or bumpy", icon: "", skin_type: [{ FORGE: 1 }, { FLARE: 0.5 }] },
-      { key: 2, option: "Dull or uneven", icon: "", skin_type: [{ HAZE: 1 }, { DUSK: 0.5 }] },
+      { key: 1, option: "Rough or bumpy", icon: "🌑", skin_type: [{ FORGE: 1 }, { FLARE: 0.5 }] },
+      { key: 2, option: "Dull or uneven", icon: "🌫️", skin_type: [{ HAZE: 1 }, { DUSK: 0.5 }] },
       { key: 3, option: "Soft and smooth", icon: "🍃", skin_type: [{ GLOW: 1 }, { MUSE: 0.5 }] },
       { key: 4, option: "Depends on the season", icon: "❄️", skin_type: [{ CALM: 1 }, { MUSE: 0.5 }] }
     ]
@@ -178,6 +178,7 @@ const ALL_RESULT_LIST = {
   "FLARE": {
     "skin_type": "FLARE",
     image:FLARE,
+   
     "type_subline": "The sensitive visionary",
     "about": "You shine bright, but your skin burns out just as fast. With excess oil, large pores, and a tendency to flare up at the slightest trigger, you're no stranger to breakouts or sensitivity. But that doesn’t mean your skin is a problem — it just needs skincare that respects the drama without adding more.",
     "skin_overview": {

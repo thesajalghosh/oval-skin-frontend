@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { FaArrowUp, FaCheckCircle, FaExclamation, FaRegStickyNote, FaSearch, FaThermometerHalf, FaTimesCircle } from 'react-icons/fa';
+import { FaArrowUp, FaCheckCircle, FaExclamation, FaRegCopy, FaRegStickyNote, FaSearch, FaThermometerHalf, FaTimesCircle } from 'react-icons/fa';
 import { IoMdShare } from "react-icons/io";
-import Product from "../images/result_group.png"
+import Product from "../images/result_group.svg"
 import Ellipse from "../images/ellipse.png"
 import { ALL_RESULT_LIST } from '../Constant.Others';
 import { useParams } from 'react-router-dom';
@@ -14,6 +14,7 @@ import FORGE_D from "../images/FORGE_D.jpg"
 import GLOW_D from "../images/GLOW_D.jpg"
 import HAZE_D from "../images/HAZE_D.jpg"
 import MUSE_D from "../images/MUSE_D.jpg"
+import SHARE from "../images/share.svg"
 import axios from 'axios';
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineErrorOutline } from "react-icons/md";
@@ -26,6 +27,8 @@ import {
   TwitterIcon,
   WhatsappIcon,
   LinkedinIcon,
+  FacebookMessengerShareButton,
+  FacebookMessengerIcon,
 } from 'react-share';
 import { BiCheckCircle } from 'react-icons/bi';
 import { ToastContainer } from 'react-toastify';
@@ -49,7 +52,16 @@ const ResultPage = () => {
     "HAZE": HAZE_D,
     "MUSE": MUSE_D
   }
+  const shareUrl = window.location.href;
+  const shareText = "Check out my Oval Type result!";
 
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   // ...existing code...
   const getResultDetails = async () => {
     setLoading(true);
@@ -103,7 +115,7 @@ const ResultPage = () => {
         }
       );
       if (data?.success) {
-            setEmailSendModal(true)
+        setEmailSendModal(true)
         setEmailSuccess(data?.is_email_sent)
       }
 
@@ -115,24 +127,24 @@ const ResultPage = () => {
     }
   }
 
-  const handleShareButton = async ()=>{
+  const handleShareButton = async () => {
     try {
 
-        const { data } = await axios.patch(
+      const { data } = await axios.patch(
         `${process.env.REACT_APP_BACKEND_API}/oval_skin/update_single_feild/${user_id}`,
         {
-      is_share : true
+          is_share: true
         }
       );
-      
+
     } catch (error) {
-      
+
     }
   }
 
-  const handleShareIcon = ()=>{
-handleShareButton()
-setShareModal(true)
+  const handleShareIcon = () => {
+    handleShareButton()
+    setShareModal(true)
   }
 
   return (
@@ -149,19 +161,20 @@ setShareModal(true)
         <div className='flex justify-between mt-[30px] item-center'>
           <div className='w-[95%] text-center text-[18px] ml-[25px]'>Your oval type is</div>
 
-          <IoMdShare size={25} className='mt-2' onClick={() => handleShareIcon()} />
+          {/* <IoMdShare size={25} className='mt-2' onClick={() => handleShareIcon()} /> */}
+          <img src={SHARE} alt='share' onClick={() => handleShareIcon()} />
 
         </div>
-        <h2 className='text-center text-[1.5rem] font-bold mt-[16px]'>{finalResult?.skin_type}</h2>
+        <h2 className='text-center text-[1.5rem] font-bold mt-[10px]'>{finalResult?.skin_type}</h2>
         <p className='text-center mt-[4px]'>{finalResult?.type_subline}</p>
 
-        <div className='flex item-center justify-center relative mt-[10px]'>
+        <div className='flex item-center justify-center'>
 
-          <img src={Ellipse} alt='ellipse' className='' />
-          <img src={finalResult?.image} alt='image_result' className='absolute top-0 left-[30%]' />
+          {/* <img src={Ellipse} alt='ellipse' className='' /> */}
+          <img src={finalResult?.image} alt='image_result' className='h-[200px] scale-125 mt-[10px]' />
         </div>
         {/* about section */}
-        <div className="border border-[1px]  border-[#2b2928] rounded-[18px] p-6 text-left mt-6 font-noto">
+        <div className="border border-[1px]  border-[#2b2928] rounded-[18px] p-6 text-left font-noto">
           <div className="flex items-center gap-2 mb-2">
             <FaRegStickyNote className="text-gray-700" />
             <p className="font-bold text-gray-800 text-[18px] font-noto">About your oval type</p>
@@ -281,7 +294,7 @@ setShareModal(true)
               onChange={(e) => setInputValue(e.target.value)}
             />
             <button
-              className="relative w-full h-[56px] bg-[#8b6f5e] hover:bg-[#775c4d] text-white font-medium py-2
+              className="relative w-full h-[56px] bg-[#9c836b] hover:bg-[#775c4d] text-white font-medium py-2 font-bold
              rounded-[16px] text-[16px] font-noto"
               onClick={handleSendEmail}
             >
@@ -299,13 +312,14 @@ setShareModal(true)
         </div>
         {/* share option */}
         <div
-          className="text-[1.1rem] w-full text-gray-800 underline flex items-center justify-center gap-1 w-fit mt-[40px] mb-[40px]"
+          className="text-[1.1rem] w-full text-gray-800 flex items-center justify-center gap-1 w-fit mt-[40px] mb-[40px]"
           onClick={() => handleImageDownload()}
         >
           {/* <span role="img" aria-label="camera">📸</span> */}
 
-          <ImFolderDownload size={25} />
-          <span>Download Your Oval Type</span>
+          {/* <ImFolderDownload size={25} /> */}
+          📂
+          <span className='underline'> Download Your Oval Type</span>
         </div>
       </div>}
 
@@ -365,20 +379,52 @@ setShareModal(true)
             <p className="text-gray-600 mb-4 text-center">
               Share your result with friends!
             </p>
-            <div className="flex gap-4 mb-4">
+            <div className="grid grid-cols-4 gap-4 mb-4 max-w-[200px]">
+              <button
+                onClick={handleCopy}
+                className="w-[40px] h-[40px] rounded-full bg-gray-600 flex items-center justify-center text-white text-xl"
+                title="Copy link"
+              >
+                <FaRegCopy />
+              </button>
+
               <FacebookShareButton url={window.location.href} quote="Check out my Oval Type result!">
                 <FacebookIcon size={40} round />
               </FacebookShareButton>
+
               <TwitterShareButton url={window.location.href} title="Check out my Oval Type result!">
                 <TwitterIcon size={40} round />
               </TwitterShareButton>
+
               <WhatsappShareButton url={window.location.href} title="Check out my Oval Type result!">
                 <WhatsappIcon size={40} round />
               </WhatsappShareButton>
+
               <LinkedinShareButton url={window.location.href} title="Check out my Oval Type result!">
                 <LinkedinIcon size={40} round />
               </LinkedinShareButton>
+
+              <FacebookMessengerShareButton url={window.location.href} quote="Check out my Oval Type result!">
+                <FacebookMessengerIcon size={40} round />
+              </FacebookMessengerShareButton>
+
+              <a
+                href={`sms:&body=${encodeURIComponent(`${shareText} ${shareUrl}`)}`}
+                className="w-[40px] h-[40px] rounded-full bg-blue-500 flex items-center justify-center text-white text-xl"
+                title="iMessage"
+              >
+                💬
+              </a>
+
+              <a
+                href={`sms:+1234567890?&body=${encodeURIComponent(`${shareText} ${shareUrl}`)}`}
+                className="w-[40px] h-[40px] rounded-full bg-green-500 flex items-center justify-center text-white text-xl"
+                title="SMS"
+              >
+                📱
+              </a>
             </div>
+
             <button
               className="text-gray-500 mt-2"
               onClick={() => setShareModal(false)}

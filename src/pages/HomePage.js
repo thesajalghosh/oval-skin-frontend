@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LOGO from "../images/logo.png"
 import ALL_IMAGE from "../images/group_image.svg"
-import Ellipse from "../images/main_ellp.png"
+import Ellipse2 from "../images/Ele2.svg"
+import Ellipse1 from "../images/main_ellp.png"
+
 import axios from 'axios';
 import { detect } from "detect-browser";
 
@@ -62,18 +64,18 @@ const HomePage = () => {
     return (
         <div className="flex flex-col items-center  pt-[20px] bg-[#FAF9F5] h-[100vh]">
             <div className='flex justify-center w-[100%] mt-[20px]'>
-                <img src={LOGO} alt='logo' className='h-[20px] w-[55px]' />
+                <img src={LOGO} alt='logo' className='h-[16px] w-[45px]' />
             </div>
             <div className='flex flex-col justify-center items-center w-[100%] mt-[20px]'>
 
-      <div className='flex item-center justify-center relative mt-[10px]'>
-
-
-                <img src={Ellipse} alt='ellipse' className='' />
-                <img src={ALL_IMAGE} alt='image_result' className='absolute top-0 left-[5%] ' />
-      </div>
+                <div className='flex item-center justify-center relative mt-[10px]'>
+                    <img src={Ellipse2} alt='ellipse' className='w-[100vw]' />
+                    {/* <img src={Ellipse1} alt='ellipse' className='w-full absolute' /> */}
+                   
+                    <img src={ALL_IMAGE} alt='image_result' className='absolute top-0 left-[5%] ' />
+                </div>
                 <div>
-                    <h1 className="text-[42px] font-semibold text-gray-800 leading-tight flex flex-col mt-4 font-noto">
+                    <h1 className="text-[42px] md:text-[25px] font-semibold text-gray-800 leading-tight flex flex-col mt-4 font-noto">
                         <span >
                             What’s Your
                         </span>{" "}
@@ -95,7 +97,7 @@ const HomePage = () => {
                 </button> */}
                 <button
                     onClick={handleStartTest}
-                    className="bg-[#9C836B] text-white px-6 py-3 rounded-xl text-[16px] mt-6 md:text-base hover:bg-[#9C836B] transition duration-300 shadow-md flex items-center justify-center relative"
+                    className="bg-[#9C836B] text-white px-6 py-3 font-bold rounded-xl text-[16px] mt-6 md:text-base hover:bg-[#9C836B] transition duration-300 shadow-md flex items-center justify-center relative"
                     disabled={buttonLoading}
                 >
                     {buttonLoading && (
@@ -104,7 +106,7 @@ const HomePage = () => {
                         </span>
                     )}
                     <span className={buttonLoading ? "opacity-0" : ""}>
-                      ✨ Start the skin quiz
+                        ✨ Start the skin quiz
                     </span>
                 </button>
             </div>
