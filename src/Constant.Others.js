@@ -1,11 +1,11 @@
-import FLARE from "./images/Flare.svg";
-import BLOOM from "./images/Bloom.png";
-import CLAM from "./images/Calm.svg";
-import DUSK from "./images/Dusk.svg";
-import FORGE from "./images/Forge.svg";
-import GLOW from "./images/Glow.svg";
-import HAZE from "./images/Haze.svg";
-import MUSE from "./images/Muse.svg"
+import FLARE from "./imagesec/Flare.png";
+import BLOOM from "./imagesec/Bloom.png";
+import CLAM from "./imagesec/Calm.png";
+import DUSK from "./imagesec/Dusk.png";
+import FORGE from "./imagesec/Forge.png";
+import GLOW from "./imagesec/Glow.png";
+import HAZE from "./imagesec/Haze.png";
+import MUSE from "./imagesec/Muse.png"
 
 const ALL_QUESTION_LIST = [
   {
@@ -289,8 +289,7 @@ const ALL_RESULT_LIST = {
 
   "DUSK": {
     "skin_type": "DUSK",
-    // image: DUSK,
-    image: BLOOM,
+    image: DUSK,
     "type_subline": "The moody minimalist",
     "about": "With dry, small-pored skin and a high tendency for irritation, Dusk types walk a fine line. Your skin barrier is easily overwhelmed — reacting to weather changes, product overload, or even stress. Redness, flaking, or stinging may come and go unpredictably. But once supported with the right routine, your skin softens into a beautifully calm, even-toned state.",
     "skin_overview": {
