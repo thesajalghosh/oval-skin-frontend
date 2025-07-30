@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LOGO from "../images/logo.png"
-import ALL_IMAGE from "../images/group_image.svg"
+import ALL_IMAGE from "../imagesec/Landing.png"
 import Ellipse2 from "../images/Ele2.svg"
 import Ellipse1 from "../images/main_ellp.png"
 

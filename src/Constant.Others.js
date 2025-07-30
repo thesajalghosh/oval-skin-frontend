@@ -218,8 +218,8 @@ const ALL_RESULT_LIST = {
     "type_subline": "The golden optimist",
     "about": "You naturally shine — now let’s make sure it’s the right kind of glow. Your skin is radiant, balanced on the surface, but needs help behind the scenes. With visible pores and a tendency for oil buildup, Glow types often look healthy on the outside while secretly battling congestion, uneven texture, and the occasional breakout.",
     "skin_overview": {
-      "sebum_production": "🧈 ️ Moderately oily",
-      "pore": "👀  Enlarged or visible",
+      "sebum_production": "🧈 Moderately oily",
+      "pore": "👀 Enlarged or visible",
       "sensitivity": "👍 Low to moderate",
       "concerns":"✨ Blackheads and shine"
     },
