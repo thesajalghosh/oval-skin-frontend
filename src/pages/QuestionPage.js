@@ -155,7 +155,7 @@ const QuestionPage = () => {
           </p>
         </div>
       )}
-      {!loading && <div className="flex flex-col items-center bg-[#fdfbf8] p-4 h-[100%] font-noto">
+      {!loading && <div className="flex flex-col items-center bg-[#fdfbf8] min-h-screen overflow-y-auto p-4 font-noto">
         <div className='flex justify-between w-[100%] text-[20px] mt-2 mb-5'>
 
           <MdKeyboardBackspace size={20} onClick={handleBackButton} />

@@ -19,8 +19,8 @@ function AppLayout() {
   }
 
   return (
-    <div className="bg-white h-screen w-screen flex items-center justify-center">
-      <div className="w-full h-full md:w-[25vw] md:h-[100vh] bg-gray-100 overflow-hidden">
+    <div className="flex items-center justify-center w-full">
+      <div className="w-full h-full md:w-[27vw] md:h-[100vh] bg-[#FAF9F5]">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/question-page/:user_id" element={<QuestionPage />} />

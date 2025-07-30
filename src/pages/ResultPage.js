@@ -157,7 +157,7 @@ const ResultPage = () => {
           </div>
         </div>
       )}
-      {!loading && <div className='bg-[#FAF9F5] w-full h-screen overflow-y-auto flex flex-col item-center p-6 font-noto'>
+      {!loading && <div className='bg-[#FAF9F5] w-full overflow-y-auto flex flex-col item-center p-6 font-noto'>
         <div className='flex justify-between mt-[30px] item-center'>
           <div className='w-[95%] text-center text-[18px] ml-[25px]'>Your oval type is</div>
 

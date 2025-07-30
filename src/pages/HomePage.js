@@ -62,14 +62,14 @@ const HomePage = () => {
 
     };
     return (
-        <div className="flex flex-col items-center  pt-[20px] bg-[#FAF9F5] h-[100vh]">
+        <div className="flex flex-col items-center  pt-[20px] h-[100vh]">
             <div className='flex justify-center w-[100%] mt-[20px]'>
                 <img src={LOGO} alt='logo' className='h-[16px] w-[45px]' />
             </div>
             <div className='flex flex-col justify-center items-center w-[100%] mt-[20px]'>
 
                 <div className='flex item-center justify-center relative mt-[10px]'>
-                    <img src={Ellipse2} alt='ellipse' className='w-[100vw]' />
+                    <img src={Ellipse2} alt='ellipse' className='w-full' />
                     {/* <img src={Ellipse1} alt='ellipse' className='w-full absolute' /> */}
                    
                     <img src={ALL_IMAGE} alt='image_result' className='absolute top-0 left-[5%] ' />
