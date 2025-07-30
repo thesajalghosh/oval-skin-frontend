@@ -68,7 +68,7 @@ const HomePage = () => {
             </div>
             <div className='flex flex-col justify-center items-center w-[100%] mt-[20px]'>
 
-                <div className='flex item-center justify-center relative mt-[10px]'>
+                <div className='flex item-center justify-center relative mt-[10px] mb-[24px]'>
                     <img src={Ellipse2} alt='ellipse' className='w-full' />
                     {/* <img src={Ellipse1} alt='ellipse' className='w-full absolute' /> */}
                    
