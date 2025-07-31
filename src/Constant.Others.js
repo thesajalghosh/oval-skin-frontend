@@ -464,8 +464,21 @@ const ALL_RESULT_LIST = {
   }
 }
 
+const EMAIL_IMAGE = {
+  "FLARE" : "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909044/FLARE_email_hluwq3.jpg",
+  "GLOW" : "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909318/GLOW_email_mx8ajv.jpg",
+  "CALM" : "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909042/CALM_email_1_xdqelc.jpg",
+  "DUSK": "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909040/DUSK_email_js85j8.jpg",
+  "BLOOM": "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909039/BLOOM_email_1_cucgox.jpg",
+  "HAZE": "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909041/HAZE_email_nvmuzr.jpg",
+  "FORGE": "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909035/FORGE_email_ndcrfo.jpg",
+  "MUSE" : "https://res.cloudinary.com/dgkckcwxs/image/upload/v1753909038/MUSE_email_tpmkcy.jpg"
+
+}
+
 
 export {
   ALL_QUESTION_LIST,
   ALL_RESULT_LIST,
+  EMAIL_IMAGE
 };

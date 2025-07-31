@@ -16,6 +16,8 @@ import HAZE_D from "../images/HAZE_D.jpg"
 import MUSE_D from "../images/MUSE_D.jpg"
 import SHARE from "../images/share.svg"
 import axios from 'axios';
+import emailjs from "emailjs-com";
+
 import { RxCross2 } from "react-icons/rx";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import {
@@ -103,6 +105,46 @@ const ResultPage = () => {
     document.body.removeChild(link);
   }
 
+  const service_id = {
+    "FLARE": "template_5berdq9",
+    "GLOW": "template_6860lk9",
+    "CALM": "template_5berdq9",
+    "DUSK": "template_6860lk9",
+    "BLOOM": "template_5berdq9",
+    "HAZE": "template_6860lk9",
+    "FORGE": "template_5berdq9",
+    "MUSE": "template_6860lk9"
+  }
+
+  const handleSendEmailForSend = async () => {
+    // Basic email validation
+    if (!inputValue || !/\S+@\S+\.\S+/.test(inputValue)) {
+      console.error('Invalid or empty email address.');
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      const result = await emailjs.send(
+        'service_deix5n4',           // Your service ID
+        service_id[finalResult?.skin_type],          // Your template ID
+        {
+          email: inputValue, // mapped to {{email}} for 'To' field
+        },
+        '6n0bC6JKwZmHreWdR'          // Your public key (user ID)
+      );
+
+      if (result.status === 200) {
+        setEmailSendModal(true);
+        setEmailSuccess(true);
+        console.log('Email sent successfully');
+      }
+    } catch (error) {
+      console.error('Email sending error:', error);
+      alert("Failed to send email. Check console for details.");
+    }
+  };
+
 
   const handleSendEmail = async () => {
     setEmailSendButtonLoading(true)
@@ -115,6 +157,7 @@ const ResultPage = () => {
         }
       );
       if (data?.success) {
+        await handleSendEmailForSend()
         setEmailSendModal(true)
         setEmailSuccess(data?.is_email_sent)
       }
