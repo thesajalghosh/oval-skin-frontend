@@ -106,14 +106,14 @@ const ResultPage = () => {
   }
 
   const service_id = {
-    "FLARE": "template_5berdq9",
-    "GLOW": "template_6860lk9",
-    "CALM": "template_5berdq9",
-    "DUSK": "template_6860lk9",
-    "BLOOM": "template_5berdq9",
-    "HAZE": "template_6860lk9",
-    "FORGE": "template_5berdq9",
-    "MUSE": "template_6860lk9"
+    "FLARE": "template_flare",
+    "GLOW": "template_glow",
+    "CALM": "template_calm",
+    "DUSK": "template_dusk",
+    "BLOOM": "template_bloom",
+    "HAZE": "template_haze",
+    "FORGE": "template_forge",
+    "MUSE": "template_mise"
   }
 
   const handleSendEmailForSend = async () => {
