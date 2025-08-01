@@ -170,55 +170,55 @@ const ResultPage = () => {
   // }
 
   const handleSendEmail = async () => {
-  setEmailSendButtonLoading(true);
-  let apiSuccess = false;
-  let emailSuccess = false;
+    setEmailSendButtonLoading(true);
+    let apiSuccess = false;
+    let emailSuccess = false;
 
-  try {
-    // Call the API
-    const { data } = await axios.patch(
-      `${process.env.REACT_APP_BACKEND_API}/oval_skin/update_single_feild/${user_id}`,
-      {
-        email: inputValue
-      }
-    );
-
-    if (data?.success) {
-      apiSuccess = true;
-
-      // If API is successful, send the email
-      try {
-        const result = await emailjs.send(
-          'service_deix5n4',
-          service_id[finalResult?.skin_type],
-          {
-            email: inputValue,
-          },
-          '6n0bC6JKwZmHreWdR'
-        );
-
-        if (result.status === 200) {
-          emailSuccess = true;
-          console.log('Email sent successfully');
+    try {
+      // Call the API
+      const { data } = await axios.patch(
+        `${process.env.REACT_APP_BACKEND_API}/oval_skin/update_single_feild/${user_id}`,
+        {
+          email: inputValue
         }
-      } catch (emailError) {
-        console.error('Email sending error:', emailError);
+      );
+
+      if (data?.success) {
+        apiSuccess = true;
+
+        // If API is successful, send the email
+        try {
+          const result = await emailjs.send(
+            'service_deix5n4',
+            service_id[finalResult?.skin_type],
+            {
+              email: inputValue,
+            },
+            '6n0bC6JKwZmHreWdR'
+          );
+
+          if (result.status === 200) {
+            emailSuccess = true;
+            console.log('Email sent successfully');
+          }
+        } catch (emailError) {
+          console.error('Email sending error:', emailError);
+        }
       }
+
+    } catch (apiError) {
+      console.log('API error:', apiError);
+    } finally {
+      // Always show modal
+      setEmailSendModal(true);
+
+      // Set success flag only if both succeeded
+      setEmailSuccess(apiSuccess && emailSuccess);
+
+      // Reset loading
+      setEmailSendButtonLoading(false);
     }
-
-  } catch (apiError) {
-    console.log('API error:', apiError);
-  } finally {
-    // Always show modal
-    setEmailSendModal(true);
-
-    // Set success flag only if both succeeded
-    setEmailSuccess(apiSuccess && emailSuccess);
-
-    // Reset loading
-    setEmailSendButtonLoading(false);
-  }
-};
+  };
 
 
   const handleShareButton = async () => {
@@ -387,7 +387,12 @@ const ResultPage = () => {
               className="w-full h-[56px] px-4 py-2 border rounded-[16px] focus:outline-none focus:border-[#9C836B] text-[16px] font-noto"
               onChange={(e) => setInputValue(e.target.value)}
             />
-            <p className='text-right text-[12px]'>*Also check your spam folder</p>
+        {emailSendModal &&    <div class="bg-[#f9f8f6] rounded-[16px] px-6 py-2 text-center w-full mx-auto shadow-sm font-noto">
+              <p class="text-[14px] text-gray-800">
+                <span class="mr-1">📩</span>Didn’t get the email?
+              </p>
+              <p class="text-[14px] text-gray-600">Check your spam folder just in case.</p>
+            </div>}
             <button
               className="relative w-full h-[56px] bg-[#9c836b] hover:bg-[#775c4d] text-white font-medium py-2 font-bold
              rounded-[16px] text-[16px] font-noto"
