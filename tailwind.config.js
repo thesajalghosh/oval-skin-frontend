@@ -17,6 +17,21 @@ module.exports = {
         noto: ["Noto Sans", "sans-serif"],
         roboto: ["Roboto", "sans-serif"]
       },
+       keyframes: {
+        'drop-in': {
+          '0%': {
+            transform: 'translate(-50%, -100px)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'translate(-50%, 0)',
+            opacity: '1',
+          },
+        },
+      },
+      animation: {
+        'drop-in': 'drop-in 0.5s ease-out forwards',
+      },
     },
   },
   plugins: [],

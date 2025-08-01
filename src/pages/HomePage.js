@@ -66,15 +66,15 @@ const HomePage = () => {
             <div className='flex justify-center w-[100%] mt-[20px]'>
                 <img src={LOGO} alt='logo' className='h-[16px] w-[45px]' />
             </div>
-            <div className='flex flex-col justify-center items-center w-[100%] mt-[20px]'>
+            <div className='flex flex-col justify-center items-center w-[100%] mt-[12px]'>
 
-                <div className='flex item-center justify-center relative mt-[10px] mb-[24px]'>
+                <div className='flex item-center justify-center relative mb-[24px]'>
                     <img src={Ellipse2} alt='ellipse' className='w-full' />
                     {/* <img src={Ellipse1} alt='ellipse' className='w-full absolute' /> */}
                    
                     <img src={ALL_IMAGE} alt='image_result' className='absolute top-0 left-[5%] ' />
                 </div>
-                <div>
+                <div className='mt-[6px]'>
                     <h1 className="text-[42px] md:text-[25px] font-semibold text-gray-800 leading-tight flex flex-col mt-4 font-noto">
                         <span >
                             What’s Your

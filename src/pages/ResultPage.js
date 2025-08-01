@@ -44,6 +44,7 @@ const ResultPage = () => {
   const [emailSuccess, setEmailSuccess] = useState(false)
   const [inputValue, setInputValue] = useState("")
   const [emailSendButtonLoading, setEmailSendButtonLoading] = useState()
+  const [spamAlertShow, setSpamAlertShow] = useState(false)
   const IMAGE_MAP = {
     "FLARE": FLARE_D,
     "BLOOM": BLOOM_D,
@@ -211,6 +212,8 @@ const ResultPage = () => {
     } finally {
       // Always show modal
       setEmailSendModal(true);
+      setSpamAlertShow(true)
+
 
       // Set success flag only if both succeeded
       setEmailSuccess(apiSuccess && emailSuccess);
@@ -241,6 +244,19 @@ const ResultPage = () => {
     setShareModal(true)
   }
 
+  useEffect(() => {
+    if (emailSendModal) {
+      const timer = setTimeout(() => {
+        if (emailSuccess) {
+
+          setEmailSendModal(false);
+        }
+      }, 7000); // 7 seconds
+
+      return () => clearTimeout(timer); // Cleanup
+    }
+  }, [emailSendModal]);
+
   return (
     <>
       {loading && (
@@ -262,13 +278,13 @@ const ResultPage = () => {
         <h2 className='text-center text-[1.5rem] font-bold mt-[10px]'>{finalResult?.skin_type}</h2>
         <p className='text-center mt-[4px]'>{finalResult?.type_subline}</p>
 
-        <div className='flex item-center justify-center'>
+        <div className='flex item-center justify-center '>
 
           {/* <img src={Ellipse} alt='ellipse' className='' /> */}
-          <img src={finalResult?.image} alt='image_result' className='h-[200px] scale-125 mt-[10px]' />
+          <img src={finalResult?.image} alt='image_result' className='h-[200px] scale-125 mt-[13px]' />
         </div>
         {/* about section */}
-        <div className="border border-[1px]  border-[#2b2928] rounded-[18px] p-6 text-left font-noto">
+        <div className="border border-[1px]  border-[#2b2928] rounded-[18px] p-6 text-left font-noto mt-[16px]" >
           <div className="flex items-center gap-2 mb-2">
             {/* <FaRegStickyNote className="text-gray-700" /> */}
             <p className="font-bold text-gray-800 text-[18px] font-noto">🧬 About your oval type</p>
@@ -387,12 +403,13 @@ const ResultPage = () => {
               className="w-full h-[56px] px-4 py-2 border rounded-[16px] focus:outline-none focus:border-[#9C836B] text-[16px] font-noto"
               onChange={(e) => setInputValue(e.target.value)}
             />
-        {emailSendModal &&    <div class="bg-[#f9f8f6] rounded-[16px] px-6 py-2 text-center w-full mx-auto shadow-sm font-noto">
-              <p class="text-[14px] text-gray-800">
-                <span class="mr-1">📩</span>Didn’t get the email?
-              </p>
-              <p class="text-[14px] text-gray-600">Check your spam folder just in case.</p>
-            </div>}
+            {spamAlertShow && emailSuccess &&
+              <div class="bg-[#f9f8f6] rounded-[16px] px-6 py-2 text-center w-full mx-auto shadow-sm font-noto">
+                <p class="text-[14px] text-gray-800">
+                  <span class="mr-1">📩</span>Didn’t get the email?
+                </p>
+                <p class="text-[14px] text-gray-600">Check your spam folder just in case.</p>
+              </div>}
             <button
               className="relative w-full h-[56px] bg-[#9c836b] hover:bg-[#775c4d] text-white font-medium py-2 font-bold
              rounded-[16px] text-[16px] font-noto"
@@ -538,18 +555,20 @@ const ResultPage = () => {
         <>
           {emailSuccess ?
             <div
-              className="fixed w-[90%] top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all
-           duration-500 animate-slide-down bg-gradient-to-r from-green-50 to-white border border-green-200 text-green-800
-            rounded-xl p-4 flex items-start space-x-3 w-[90%] shadow-sm"
-              style={{ animation: 'slideDown 0.5s' }}
+              className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[90%]
+             bg-gradient-to-r from-green-50 to-white border border-green-200 text-green-800
+             rounded-xl p-4 flex items-start space-x-3 animate-drop-in"
+              style={{ boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}
             >
-              <BiCheckCircle className="text-green-500" size={35} />
-              <div>
-                <p className="font-semibold text-sm text-gray-800">Sent!</p>
+              <BiCheckCircle className="text-[#6bad4c]" size={35} />
+              <div className='mt-[1px] text-[#434343]'>
+                <p className="font-semibold text-[18px]">Sent!</p>
                 <p>Your personalized routine is on its way—check your inbox!</p>
               </div>
-              <RxCross2 size={35} onClick={() => setEmailSendModal(false)} />
-            </div> :
+              <RxCross2 size={35} className="text-[#2b2928]" onClick={() => setEmailSendModal(false)} />
+            </div>
+
+            :
             <div
               className="fixed w-[90%] top-6 left-1/2 transform -translate-x-1/2 z-50 transition-all
            duration-500 animate-slide-down  border-1 border-red-500 bg-gradient-to-r from-red-100 to-red-50
