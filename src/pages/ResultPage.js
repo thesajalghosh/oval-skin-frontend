@@ -387,6 +387,7 @@ const ResultPage = () => {
               className="w-full h-[56px] px-4 py-2 border rounded-[16px] focus:outline-none focus:border-[#9C836B] text-[16px] font-noto"
               onChange={(e) => setInputValue(e.target.value)}
             />
+            <p className='text-right text-[12px]'>*Also check your spam folder</p>
             <button
               className="relative w-full h-[56px] bg-[#9c836b] hover:bg-[#775c4d] text-white font-medium py-2 font-bold
              rounded-[16px] text-[16px] font-noto"
