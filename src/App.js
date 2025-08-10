@@ -1,9 +1,10 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import QuestionPage from './pages/QuestionPage';
 import ResultPage from './pages/ResultPage';
 import Dashboard from './pages/Dashboard';
 import SingleUserDetails from './pages/SingleUserDetails';
+import ProtectedDashboard from './pages/ProtectedDashboard';
 
 function AppLayout() {
   const location = useLocation();
@@ -12,8 +13,23 @@ function AppLayout() {
   if (isDashboard) {
     return (
       <Routes>
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/dashboard/user-details/:user_id' element={<SingleUserDetails/>}/>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedDashboard>
+              <Dashboard />
+            </ProtectedDashboard>
+          }
+        />
+        <Route
+          path="/dashboard/user-details/:user_id"
+          element={
+            <ProtectedDashboard>
+              <SingleUserDetails />
+            </ProtectedDashboard>
+          }
+        />
+        <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     );
   }
